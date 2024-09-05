@@ -207,8 +207,7 @@ class _FileManagerScreenState extends State<FileManagerScreen> {
     scrollPosition = {};
     fileManagerBloc = context.read<FileManagerBloc>();
     selectedItemsCubit = context.read<SelectedItemsCubit>();
-    dir = Directory(
-        widget.home ?? Platform.environment['HOME'] ?? '/storage/emulated/0');
+    dir = Directory(widget.home ?? '/storage/emulated/0');
 
     fileManagerBloc.add(ChangeCurrentDirectory(dir));
   }
@@ -216,7 +215,7 @@ class _FileManagerScreenState extends State<FileManagerScreen> {
   @override
   void dispose() {
     selectedItemsCubit.clear();
-    fileManagerBloc.add(ChangeCurrentDirectory(dir));
+    fileManagerBloc.add(ChangeCurrentDirectory(Directory('/')));
     scrollController.dispose();
 
     super.dispose();

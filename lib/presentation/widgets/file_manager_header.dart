@@ -21,7 +21,7 @@ class _FileManagerHeaderState extends State<FileManagerHeader>
   void initState() {
     _controller = AnimationController(
       lowerBound: 0.5,
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
     _offsetAnimation = Tween<Offset>(
@@ -32,6 +32,13 @@ class _FileManagerHeaderState extends State<FileManagerHeader>
       curve: Curves.easeInOut,
     ));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+
+    super.dispose();
   }
 
   @override

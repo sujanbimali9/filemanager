@@ -47,7 +47,6 @@ class QuickAccessBloc extends Bloc<QuickAccessEvent, QuickAccessState> {
         apks: data['apks'],
         documents: data['documents'],
         compressedFiles: data['compressed'],
-        downloads: downloads,
       ));
     } catch (error) {
       log('Error: $error');
@@ -97,17 +96,31 @@ class QuickAccessBloc extends Bloc<QuickAccessEvent, QuickAccessState> {
 
     try {
       final dir = Directory(dirPath);
-      final files = dir.list(recursive: true, followLinks: false);
-      log('Loading files from $dirPath');
+      final files = dir.list(recursive: false, followLinks: false);
 
       await for (final file in files) {
-        final ext = file.path.split('.').last.toLowerCase();
-        extensions.forEach((key, value) {
-          if (value.contains(ext)) {
-            data[key]!.add(file);
+        if (file.path.contains('/0/Android')) continue;
+        if (file is Directory) {
+          await for (final subFile
+              in file.list(recursive: true, followLinks: false)) {
+            final ext = subFile.path.split('.').last.toLowerCase();
+            extensions.forEach((key, value) {
+              if (value.contains(ext)) {
+                data[key]!.add(subFile);
+              }
+            });
           }
-        });
+        }
+        if (file is! File) {
+          final ext = file.path.split('.').last.toLowerCase();
+          extensions.forEach((key, value) {
+            if (value.contains(ext)) {
+              data[key]!.add(file);
+            }
+          });
+        }
       }
+      log('Data loaded.   data: $data');
 
       resultSendPort.send(data);
     } catch (e) {
@@ -132,7 +145,6 @@ class QuickAccessBloc extends Bloc<QuickAccessEvent, QuickAccessState> {
       audios: event.type == 'audios' ? files : null,
       documents: event.type == 'documents' ? files : null,
       compressedFiles: event.type == 'compressedFiles' ? files : null,
-      downloads: event.type == 'downloads' ? files : null,
     ));
 
     final result =

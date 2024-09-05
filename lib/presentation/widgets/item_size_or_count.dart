@@ -21,9 +21,9 @@ class ItemSizeorCount extends StatelessWidget {
             return const Text('');
           }
           if (file is Directory) {
-            final length = snapshot.data as int;
+            final length = snapshot.data as int?;
 
-            return Text('$length items');
+            return Text('${length ?? 0} items');
           } else {
             final stat = snapshot.data as FileStat;
             return Text(_formatBytes(stat.size, 2));

@@ -27,11 +27,8 @@ final class FileManagerState extends Equatable {
     if (currentDirectory == null) return '';
 
     final knownPaths = <String, String>{
-      Platform.environment['HOME'] ?? 'unknown':
-          'Home/${Platform.environment['USERNAME']}',
       '/storage/emulated/0': 'Internal',
       '/storage/external/emulated/0': 'External',
-      '/storage/[sd_card_name]': 'Micro SD',
       '/Documents': 'Documents',
       '/Library': 'Library Storage',
       '/Caches': 'Cache Storage',
@@ -39,10 +36,7 @@ final class FileManagerState extends Equatable {
     };
 
     final String fullPath = currentDirectory!.path;
-
-    log('fullPath: $fullPath');
     String readablePath = fullPath;
-
     for (var entry in knownPaths.entries) {
       if (fullPath.startsWith(entry.key)) {
         readablePath = readablePath.replaceFirst(entry.key, entry.value);

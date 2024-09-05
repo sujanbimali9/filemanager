@@ -5,7 +5,6 @@ class QuickAccessState extends Equatable {
   final List<FileSystemEntity> images;
   final List<FileSystemEntity> videos;
   final List<FileSystemEntity> audios;
-  final List<FileSystemEntity> downloads;
   final List<FileSystemEntity> apks;
   final List<FileSystemEntity> documents;
   final List<FileSystemEntity> compressedFiles;
@@ -35,8 +34,6 @@ class QuickAccessState extends Equatable {
         return videos;
       case 'audios':
         return audios;
-      case 'downloads':
-        return downloads;
       case 'apps':
         return apks;
       case 'documents':
@@ -56,7 +53,6 @@ class QuickAccessState extends Equatable {
     required this.documents,
     required this.compressedFiles,
     required this.audios,
-    required this.downloads,
     this.error,
   });
 
@@ -78,7 +74,6 @@ class QuickAccessState extends Equatable {
       documents: [],
       compressedFiles: [],
       audios: [],
-      downloads: [],
     );
   }
 
@@ -87,7 +82,6 @@ class QuickAccessState extends Equatable {
     List<FileSystemEntity>? images,
     List<FileSystemEntity>? videos,
     List<FileSystemEntity>? audios,
-    List<FileSystemEntity>? downloads,
     List<FileSystemEntity>? apks,
     List<FileSystemEntity>? documents,
     List<FileSystemEntity>? compressedFiles,
@@ -98,7 +92,6 @@ class QuickAccessState extends Equatable {
       images: images ?? this.images,
       videos: videos ?? this.videos,
       audios: audios ?? this.audios,
-      downloads: downloads ?? this.downloads,
       apks: apks ?? this.apks,
       documents: documents ?? this.documents,
       compressedFiles: compressedFiles ?? this.compressedFiles,

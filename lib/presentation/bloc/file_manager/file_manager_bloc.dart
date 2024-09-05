@@ -59,7 +59,9 @@ class FileManagerBloc extends Bloc<FileManagerEvent, FileManagerState> {
   FutureOr<void> _changeCurrentDirectory(
       ChangeCurrentDirectory event, Emitter<FileManagerState> emit) async {
     try {
+      log(state.rootDirectory);
       if (state.rootDirectory.isEmpty) {
+        // final rootDirectory = event.directory.path;
         final rootDirectory = await _determineRootDirectory();
         emit(state.copyWith(rootDirectory: rootDirectory));
       }
@@ -202,20 +204,11 @@ class FileManagerBloc extends Bloc<FileManagerEvent, FileManagerState> {
   }
 
   Future<String> _determineRootDirectory() async {
-    if (Platform.isLinux) {
-      return Platform.environment['HOME'] ?? '';
-    }
-
-    if (Platform.isIOS) {
-      return '/';
-    }
-
     if (Platform.isAndroid) {
       final applicationDirectory = await getExternalStorageDirectory();
       return applicationDirectory!.path
           .replaceFirst('/Android/data/com.example.filemanager/files', '');
     }
-
     return '/';
   }
 

@@ -19,7 +19,7 @@ class AnimatedBottomBuilder extends StatelessWidget {
             : child2 != null
                 ? const Offset(0, 0)
                 : const Offset(0, 1),
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 300),
         child: firstChild
             ? Container(
                 height: 70,

@@ -24,7 +24,7 @@ import 'package:flutter/material.dart';
 //         log('isSelected: $isSelected');
 //         return AnimatedSlide(
 //           offset: isSelected ? const Offset(0, 0) : const Offset(0, 0),
-//           duration: const Duration(milliseconds: 400),
+//           duration: const Duration(milliseconds: 300),
 //           curve: Curves.easeInOut,
 //           child: isSelected
 //               ? Container(

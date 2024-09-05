@@ -26,52 +26,67 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _handlePermission(BuildContext context) async {
-    final storageStatus = await Permission.storage.status;
-    final manageStorageStatus = await Permission.manageExternalStorage.status;
+    final deviceInfo = await DeviceInfoPlugin().androidInfo;
 
-    if (!storageStatus.isGranted || !manageStorageStatus.isGranted) {
-      if (Platform.isAndroid &&
-          (await DeviceInfoPlugin().androidInfo).version.sdkInt >= 30) {
-        await Permission.manageExternalStorage.request();
+    if (deviceInfo.version.sdkInt >= 32) {
+      final storageStatus = await Permission.manageExternalStorage.status;
+      if (storageStatus.isGranted) {
+        return;
+      } else if (storageStatus.isPermanentlyDenied) {
+        if (context.mounted) {
+          permissionDeniedDialog(context);
+        }
       } else {
-        await Permission.storage.request();
+        await Permission.manageExternalStorage.request();
+        if (context.mounted) {
+          return _handlePermission(context);
+        }
       }
+      return;
     }
 
-    final updatedStorageStatus = await Permission.storage.status;
-    final updatedManageStorageStatus =
-        await Permission.manageExternalStorage.status;
-
-    if (updatedStorageStatus.isPermanentlyDenied ||
-        updatedManageStorageStatus.isPermanentlyDenied) {
+    final storageStatus = await Permission.storage.status;
+    if (storageStatus.isGranted) {
+      return;
+    } else if (storageStatus.isPermanentlyDenied) {
       if (context.mounted) {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Permission Denied'),
-              content: const Text(
-                  'Please grant the permission to access the storage.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    exit(0); // Terminate the app (use with caution)
-                  },
-                  child: const Text('Close App'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    openAppSettings(); // Open app settings
-                  },
-                  child: const Text('Open Settings'),
-                ),
-              ],
-            );
-          },
-        );
+        permissionDeniedDialog(context);
+      }
+    } else {
+      await Permission.manageExternalStorage.request();
+      if (context.mounted) {
+        return _handlePermission(context);
       }
     }
+    return;
+  }
+
+  Future<dynamic> permissionDeniedDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Permission Denied'),
+          content:
+              const Text('Please grant the permission to access the storage.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                exit(0); // Terminate the app (use with caution)
+              },
+              child: const Text('Close App'),
+            ),
+            TextButton(
+              onPressed: () {
+                openAppSettings(); // Open app settings
+              },
+              child: const Text('Open Settings'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -170,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           TweenAnimationBuilder<double>(
             tween: Tween<double>(begin: 0, end: 0.25),
-            duration: const Duration(milliseconds: 800),
+            duration: const Duration(milliseconds: 500),
             builder: (context, value, child) {
               return DraggableScrollableSheet(
                 initialChildSize: value,
@@ -258,8 +273,8 @@ final quickAccessData = [
     title: 'Downloads',
     icon: 'assets/icons/download.png',
     color: Colors.green,
-    routeName: Routes.quickAccess,
-    routeArguments: ['Downloads', 'downloads'],
+    routeName: Routes.fileManager,
+    routeArguments: '/storage/emulated/0/Download/',
   ),
   QuickAccessData(
     title: 'Zip Files',

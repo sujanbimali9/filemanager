@@ -23,8 +23,6 @@ class StorageContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('rebuild');
-
     String formatBytes(int bytes, int decimals) {
       if (bytes <= 0) return '0 Bytes';
       const suffixes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];

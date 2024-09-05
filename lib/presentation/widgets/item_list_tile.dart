@@ -49,7 +49,7 @@ class ItemListTile extends StatelessWidget {
           final isSelected = state.selectedItems.contains(file);
 
           return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 400),
+            duration: const Duration(milliseconds: 300),
             reverseDuration: const Duration(milliseconds: 0),
             switchInCurve: Curves.easeInOut,
             switchOutCurve: Curves.easeInOut,

@@ -6,7 +6,6 @@ import 'package:filemanager/presentation/widgets/animated_bottom_builder.dart';
 import 'package:filemanager/presentation/widgets/bottom_navigation.dart';
 import 'package:filemanager/presentation/widgets/item_list_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class QuickAccessScreen extends StatefulWidget {

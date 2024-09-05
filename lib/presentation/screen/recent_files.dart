@@ -28,10 +28,6 @@ class _RecentFilesState extends State<RecentFiles> {
   @override
   void initState() {
     widget.dragController.addListener(_dragListener);
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   widget.dragController.animateTo(0.25,
-    //       duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
-    // });
     super.initState();
   }
 
